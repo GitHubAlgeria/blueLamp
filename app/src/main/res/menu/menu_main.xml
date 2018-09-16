@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/scan"
+        android:title="scan"
+        android:orderInCategory="100" />
+
+    <item android:id="@+id/stopscan"
+        android:title="stopscan"
+        android:orderInCategory="100"
+        android:visible="false"/>
+
+    <item android:id="@+id/connecter"
+        android:title="connecter"
+        android:orderInCategory="100"
+        android:visible="false"/>
+
+    <item android:id="@+id/deconnecter"
+        android:title="deconnecter"
+        android:orderInCategory="100"
+        android:visible="false"/>
+
+</menu>
