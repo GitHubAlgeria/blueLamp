@@ -59,5 +59,6 @@ these roles can be grouped into tow pairs advertiser and scanner and central and
 # bluelamp 
 blue lamp is an application built to work on android >5.0 which allows us to control smart lamp over ble the service of the lamp has 0000f00d-1212-efde-1523-785feabcd123 as UUID and the control light characteristic has 0000beef-1212-efde-1523-785feabcd123 as UUID bellow you find a screenshot of the app
 ![rsz_1screenshot_20181029-104609](https://user-images.githubusercontent.com/38364385/47644686-1e3d8080-db6f-11e8-928f-21219a0f8e35.png)
+
            
 
