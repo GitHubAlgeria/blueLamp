@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
@@ -44,6 +46,7 @@ import java.util.UUID;
      Button timerButton;
      TextView peripheralTextView;
      ImageSwitcher imageSwitcher;
+     SeekBar seekBar;
      String adress;
      String devicename;
      private final static int REQUEST_ENABLE_BT = 1;
@@ -70,6 +73,55 @@ import java.util.UUID;
 
         timerButton=(Button)findViewById(R.id.timerset);
         registerForContextMenu(timerButton);
+        seekBar=(SeekBar)findViewById(R.id.seek);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                                               @Override
+                                               public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+                                                   int seekvalue=0;
+                                                   if(i>=0 && i<25)
+                                                   {
+                                                       seekvalue=1;
+                                                   }
+                                                   else if(i>25 && i<50)
+                                                   {
+                                                       seekvalue=2;
+                                                   }
+                                                   else if(i>50 && i<75)
+                                                   {
+                                                       seekvalue=3;
+                                                   }
+                                                   else if(i>75 && i<100)
+                                                   {
+                                                       seekvalue=4;
+                                                   }
+                                                   if(btGatt!=null)
+                                                   {   byte[] value=new byte[1];
+                                                       // value [0]=(byte)(01&0xff);
+                                                       value [0]=(byte)(seekvalue);
+                                                       SWITCHCharacteristic.setValue(value);
+                                                       btGatt.writeCharacteristic(SWITCHCharacteristic);
+                                                       imageSwitcher.setImageResource(R.drawable.on);}
+                                                   else
+                                                   {
+                                                       peripheralTextView.setText("ble cerist device not found");
+                                                   }
+                                                   Log.d("progressbar======>>"," "+seekvalue);
+
+                                               }
+
+                                               @Override
+                                               public void onStartTrackingTouch(SeekBar seekBar) {
+
+                                               }
+
+                                               @Override
+                                               public void onStopTrackingTouch(SeekBar seekBar) {
+
+                                               }
+
+                                           }
+        );
 
         imageSwitcher=(ImageSwitcher)findViewById(R.id.imageswitcher);
         imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
@@ -177,7 +229,7 @@ import java.util.UUID;
 
              adress=result.getDevice().getAddress();
              devicename=result.getDevice().getName();
-             if (devicename.equals("blue_cerist"))
+             if (devicename.equals("Anis"))
              {
                  peripheralTextView.setText("Device Name: " + result.getDevice().getName() + " rssi: " + result.getRssi() + "\n");
              }
@@ -253,13 +305,14 @@ import java.util.UUID;
      {
 
          if(devicename!=null)
-         {   if (devicename.equals("blue_cerist") )
+         {   if (devicename.equals("Anis") )
          {
              peripheralTextView.setText("blue_cerist found");
              BluetoothDevice device=btAdapter.getRemoteDevice(adress);
              device.connectGatt(getApplicationContext(),false,connectecallabck);
              switchonButton.setEnabled(true);
              switchoffButton.setEnabled(true);
+             seekBar.setEnabled(true);
              timerButton.setEnabled(true);
          }
          else
@@ -284,7 +337,8 @@ import java.util.UUID;
          btGatt.close();
          switchonButton.setEnabled(false);
          switchoffButton.setEnabled(false);
-         timerButton.setEnabled(false);}
+         timerButton.setEnabled(false);
+         seekBar.setEnabled(false);}
          else
          {
              switchonButton.setEnabled(false);
